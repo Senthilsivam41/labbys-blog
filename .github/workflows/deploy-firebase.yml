@@ -1,0 +1,29 @@
+name: Deploy Firebase backend
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm install --no-audit --no-fund
+        working-directory: functions
+      - run: npm run build
+        working-directory: functions
+      - name: Configure owner security rule
+        run: |
+          sed -i "s/OWNER_EMAIL_REPLACE_ME/${ADMIN_EMAIL}/g" firestore.rules storage.rules
+        env:
+          ADMIN_EMAIL: ${{ secrets.ADMIN_EMAIL }}
+      - run: npx firebase-tools deploy --project "$FIREBASE_PROJECT_ID" --only functions,firestore,storage --non-interactive
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+          FIREBASE_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}

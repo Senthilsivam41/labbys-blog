@@ -1,0 +1,9 @@
+import type { Metadata } from "next";
+import { notFound } from "next/navigation";
+import { PageShell } from "@/components/site-shell";
+import { getPublishedManifest } from "@/lib/content";
+export const dynamicParams = false;
+export const dynamic = "force-static";
+export async function generateStaticParams() { const data = await getPublishedManifest(); const params = data.projects.map(({ slug }) => ({ slug })); return params.length ? params : [{ slug: "__placeholder__" }]; }
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> { const { slug } = await params; const data = await getPublishedManifest(); const item = data.projects.find((project) => project.slug === slug); return item ? { title: item.seoTitle ?? item.title, description: item.seoDescription ?? item.summary } : {}; }
+export default async function ProjectPage({ params }: { params: Promise<{ slug: string }> }) { const { slug } = await params; const data = await getPublishedManifest(); const item = data.projects.find((project) => project.slug === slug); if (!item) notFound(); return <PageShell site={data.site}><article className="case-study section-pad"><header><span className="eyebrow">{item.topic} · Selected work</span><h1>{item.title}</h1><p>{item.summary}</p></header><div className="case-grid"><section><span className="eyebrow">The challenge</span><h2>What needed to change</h2><p>{item.challenge}</p></section><section><span className="eyebrow">The approach</span><h2>How the work moved</h2><p>{item.approach}</p></section><section><span className="eyebrow">The outcome</span><h2>What became possible</h2><p>{item.outcomes}</p></section></div><div className="tag-row">{item.technologies.map((tag) => <span key={tag}>{tag}</span>)}</div>{item.projectUrl && <a className="button" href={item.projectUrl} target="_blank" rel="noreferrer">Visit project ↗</a>}</article></PageShell>; }

@@ -1,0 +1,57 @@
+name: Validate LabbyS
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: validate-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - name: Install website dependencies
+        run: npm ci --ignore-scripts
+
+      - name: Install Functions dependencies
+        run: npm install --ignore-scripts --no-audit --no-fund
+        working-directory: functions
+
+      - name: Install pinned Firebase CLI
+        run: npm install --ignore-scripts --no-save firebase-tools@15.3.0
+
+      - name: Type-check website
+        run: npm run lint
+
+      - name: Compile Firebase Functions
+        run: npm run build
+        working-directory: functions
+
+      - name: Run contract and Firestore Rules tests
+        run: ./node_modules/.bin/firebase emulators:exec --project demo-labbys --only auth,firestore "npm test"
+
+      - name: Verify static export
+        run: npm run build
+        env:
+          GITHUB_PAGES: "true"
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          NEXT_PUBLIC_SITE_URL: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}

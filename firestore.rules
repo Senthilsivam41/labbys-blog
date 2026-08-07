@@ -1,0 +1,20 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isOwner() { return request.auth != null && request.auth.token.email == "OWNER_EMAIL_REPLACE_ME"; }
+    function isPublished() { return resource.data.status == "published"; }
+    match /articles/{id} { allow read: if isPublished() || isOwner(); allow write: if isOwner(); }
+    match /talks/{id} { allow read: if isPublished() || isOwner(); allow write: if isOwner(); }
+    match /slides/{id} { allow read: if isPublished() || isOwner(); allow write: if isOwner(); }
+    match /projects/{id} { allow read: if isPublished() || isOwner(); allow write: if isOwner(); }
+    match /siteSettings/{id} { allow read, write: if isOwner(); }
+    match /services/{id} { allow read, write: if isOwner(); }
+    match /inquiries/{id} { allow read, update, delete: if isOwner(); allow create: if false; }
+    match /inquiryRateLimits/{id} { allow read, write: if false; }
+    match /userRuntime/{userId} {
+      allow get: if request.auth != null && request.auth.uid == userId;
+      allow list, create, update, delete: if false;
+    }
+    match /{document=**} { allow read, write: if false; }
+  }
+}

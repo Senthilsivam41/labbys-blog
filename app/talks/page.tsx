@@ -1,0 +1,7 @@
+import type { Metadata } from "next";
+import { EmptyState } from "@/components/content-library";
+import { PageShell } from "@/components/site-shell";
+import { VideoEmbed } from "@/components/video-embed";
+import { byDate, getPublishedManifest } from "@/lib/content";
+export const metadata: Metadata = { title: "Talks", description: "Edited video presentations and practical sessions from Sendil." };
+export default async function TalksPage() { const data = await getPublishedManifest(); const talks = byDate(data.talks); return <PageShell site={data.site}><header className="page-hero section-pad"><span className="page-number">02 / Speaking</span><span className="eyebrow">Ideas, spoken aloud</span><h1>Talks</h1><p>Edited presentations, practical sessions, and conversations for people making technology and business decisions.</p></header><section className="section-pad library">{talks.length ? <div className="media-list">{talks.map((talk) => <article key={talk.id} className="media-item"><VideoEmbed url={talk.videoUrl} title={talk.title} /><div><span className="eyebrow">{talk.topic}{talk.duration ? ` · ${talk.duration}` : ""}</span><h2>{talk.title}</h2><p>{talk.summary}</p>{talk.event && <span className="media-event">Presented at {talk.event}</span>}</div></article>)}</div> : <EmptyState title="The first talk will arrive here." copy="Edited presentations will be added as they are ready to share—focused, practical, and worth replaying." />}</section></PageShell>; }
