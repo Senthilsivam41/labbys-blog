@@ -32,9 +32,9 @@
 @layer components {
   .site-header { align-items:center; background:rgba(243,239,229,.93); border-bottom:1px solid var(--line); display:flex; height:90px; justify-content:space-between; padding:0 max(24px, calc((100vw - 1400px) / 2)); position:sticky; top:0; z-index:30; backdrop-filter:blur(14px); }
   .brand { align-items:center; display:flex; font-size:.72rem; font-weight:800; letter-spacing:.03em; line-height:1.12; text-transform:uppercase; }
-  .brand-logo { display:block; height:auto; object-fit:contain; }
-  .brand-logo-header { max-height:78px; width:148px; }
-  .brand-logo-admin { border:1px solid rgba(255,255,255,.18); width:100%; }
+  .brand-logo { aspect-ratio:1024 / 538; display:block; height:auto !important; object-fit:contain; }
+  .brand-logo-header { height:auto !important; max-height:78px; width:148px; }
+  .brand-logo-admin { border:1px solid rgba(255,255,255,.18); height:auto !important; width:100%; }
   .brand-mark { align-items:center; background:var(--blue); border-radius:50%; color:white; display:inline-flex; font-family:var(--serif); font-size:1.4rem; font-style:italic; height:42px; justify-content:center; margin-right:.7rem; width:42px; }
   .brand-mark.large { font-size:3rem; height:90px; margin:0 0 1.5rem; width:90px; }
   .nav-links { align-items:center; display:flex; gap:clamp(1rem,2vw,2.2rem); }
@@ -52,8 +52,8 @@
   .hero .button-row { margin-top:2.2rem; }
   .hero-link { margin-left:.6rem; }
   .hero-object { align-items:center; align-self:center; aspect-ratio:1; display:flex; justify-content:center; margin:1rem; position:relative; }
-  .hero-logo-object { aspect-ratio:auto; padding:1rem; }
-  .hero-brand-logo { border:1px solid var(--line); box-shadow:0 24px 70px rgba(24,35,31,.15); width:100%; }
+  .hero-logo-object { aspect-ratio:auto; max-width:460px; padding:1rem; width:100%; }
+  .hero-brand-logo { aspect-ratio:1024 / 538; border:1px solid var(--line); box-shadow:0 24px 70px rgba(24,35,31,.15); height:auto !important; object-fit:contain; width:100%; }
   .monogram { align-items:center; background:var(--blue); border-radius:50%; box-shadow:0 30px 80px rgba(40,69,216,.25); color:white; display:flex; font-family:var(--serif); font-size:clamp(7rem,14vw,13rem); font-style:italic; height:65%; justify-content:center; position:relative; width:65%; z-index:2; }
   .orbit { border:1px solid var(--rust); border-radius:50%; inset:6%; position:absolute; transform:rotate(18deg) scaleY(.44); }
   .orbit-two { border-color:var(--blue-dark); inset:-4%; transform:rotate(-30deg) scaleY(.6); }

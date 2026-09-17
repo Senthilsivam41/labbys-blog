@@ -1,0 +1,37 @@
+name: Deploy LabbyS to Render
+
+on:
+  workflow_run:
+    workflows: ["Validate LabbyS"]
+    types: [completed]
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: render-production
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (github.event.workflow_run.conclusion == 'success' &&
+      github.event.workflow_run.head_branch == 'main')
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Trigger Render deploy
+        env:
+          RENDER_DEPLOY_HOOK_URL: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
+        run: |
+          if [ -z "$RENDER_DEPLOY_HOOK_URL" ]; then
+            echo "::notice title=Render deploy hook not configured::Skipping. Enable Render Git auto-deploy or add the RENDER_DEPLOY_HOOK_URL repository secret."
+            exit 0
+          fi
+
+          curl --fail-with-body --silent --show-error \
+            --retry 3 --retry-delay 5 \
+            --request POST "$RENDER_DEPLOY_HOOK_URL"
