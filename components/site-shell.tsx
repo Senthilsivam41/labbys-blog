@@ -11,6 +11,7 @@ const links = [
   ["Talks", "/talks/"],
   ["Slides", "/slides/"],
   ["Work", "/work/"],
+  ["Impact", "/impact/"],
   ["About", "/about/"],
 ] as const;
 
@@ -47,7 +48,7 @@ export function SiteFooter({ site }: { site: SiteSettings }) {
       <div className="footer-grid">
         <div><strong>{site.displayName}</strong><span>{site.shortName ?? "LabbyS"} · {site.role}</span></div>
         <nav aria-label="Footer navigation">
-          <Link href="/articles/">Articles</Link><Link href="/talks/">Talks</Link><Link href="/slides/">Slides</Link><Link href="/work/">Work</Link><Link href="/admin/">Owner sign in</Link>
+          <Link href="/articles/">Articles</Link><Link href="/talks/">Talks</Link><Link href="/slides/">Slides</Link><Link href="/work/">Work</Link><Link href="/impact/">Impact</Link><Link href="/admin/">Owner sign in</Link>
         </nav>
         <p>Ideas for builders at every stage.<br />© {new Date().getFullYear()} Sendil.</p>
       </div>
