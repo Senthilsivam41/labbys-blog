@@ -1,4 +1,6 @@
 {
-  "name": "blog-site",
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "labbys-blog",
+  "pages_build_output_dir": "./out",
   "compatibility_date": "2026-08-26"
 }
