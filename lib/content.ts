@@ -21,6 +21,7 @@ export const fallbackManifest: PublishedManifest = {
   talks: [],
   slides: [],
   projects: [],
+  testimonials: [],
 };
 
 function isManifest(value: unknown): value is PublishedManifest {
@@ -37,7 +38,7 @@ export async function getPublishedManifest(): Promise<PublishedManifest> {
     const response = await fetch(endpoint, { signal: AbortSignal.timeout(8_000) });
     if (!response.ok) throw new Error(`Content API returned ${response.status}`);
     const data: unknown = await response.json();
-    return isManifest(data) ? data : fallbackManifest;
+    return isManifest(data) ? { ...data, testimonials: Array.isArray(data.testimonials) ? data.testimonials : [] } : fallbackManifest;
   } catch (error) {
     if (process.env.CI) throw error;
     console.warn("Using built-in content because the content API is unavailable.");

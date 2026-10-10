@@ -39,6 +39,11 @@ export default async function Home() {
         <div className="audience-list"><p><span>01</span>Students, interns &amp; freshers</p><p><span>02</span>Technical professionals &amp; leaders</p><p><span>03</span>Business thinkers &amp; decision-makers</p><p><span>04</span>Founders, co-founders &amp; startup teams</p></div>
       </section>
 
+      {data.testimonials.length > 0 && <section className="testimonials section-pad" aria-labelledby="testimonials-heading">
+        <div className="section-heading"><div><span className="eyebrow">Trusted perspective</span><h2 id="testimonials-heading">What collaborators say</h2></div><p>Reflections from people I have worked with, advised, or helped move forward.</p></div>
+        <div className="testimonial-grid">{data.testimonials.map((item) => <figure key={item.id}><blockquote>“{item.summary}”</blockquote><figcaption><strong>{item.title}</strong>{(item.role || item.organization) && <span>{[item.role, item.organization].filter(Boolean).join(" · ")}</span>}</figcaption></figure>)}</div>
+      </section>}
+
       <section className="advisory-band section-pad"><div><span className="eyebrow">Need another perspective?</span><h2>Bring the knot.<br />We’ll find the thread.</h2></div><div><p>From architecture choices to early-stage product decisions, thoughtful advisory starts with understanding the real constraint.</p><Link className="button button-light" href="/advisory/">Start a conversation <span aria-hidden="true">↗</span></Link></div></section>
     </PageShell>
   );

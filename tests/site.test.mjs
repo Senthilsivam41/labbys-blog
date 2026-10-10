@@ -41,6 +41,28 @@ test("publishing trigger keeps the GitHub token server-side", async () => {
   assert.doesNotMatch(dashboard, /GITHUB_DISPATCH_TOKEN/);
 });
 
+test("testimonials flow from the owner workspace to the landing page", async () => {
+  const [types, content, functions, rules, dashboard, home] = await Promise.all([
+    read("lib/types.ts"), read("lib/content.ts"), read("functions/src/index.ts"),
+    read("firestore.rules"), read("components/admin-dashboard.tsx"), read("app/page.tsx"),
+  ]);
+  assert.match(types, /testimonials: Testimonial\[\]/);
+  assert.match(content, /testimonials: \[\]/);
+  assert.match(functions, /"testimonials"/);
+  assert.match(rules, /match \/testimonials\/\{id\}/);
+  assert.match(dashboard, /Testimonials/);
+  assert.match(home, /What collaborators say/);
+});
+
+test("admin sign-in fails closed and exposes actionable Firebase error codes", async () => {
+  const dashboard = await read("components/admin-dashboard.tsx");
+  assert.match(dashboard, /!firebaseConfigured \|\| !ownerEmail/);
+  assert.match(dashboard, /auth\/unauthorized-domain/);
+  assert.match(dashboard, /auth\/operation-not-allowed/);
+  assert.match(dashboard, /auth\/popup-blocked/);
+  assert.match(dashboard, /NEXT_PUBLIC_ADMIN_EMAIL/);
+});
+
 test("runtime state is private and can only be written by trusted backend code", async () => {
   const [rules, functions, claimScript] = await Promise.all([
     read("firestore.rules"),

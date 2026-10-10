@@ -16,7 +16,7 @@ const inquirySalt = (0, params_1.defineSecret)("INQUIRY_HASH_SALT");
 const adminEmail = (0, params_1.defineString)("ADMIN_EMAIL");
 const githubOwner = (0, params_1.defineString)("GITHUB_OWNER");
 const githubRepo = (0, params_1.defineString)("GITHUB_REPO", { default: "blog-site" });
-const contentCollections = ["articles", "talks", "slides", "projects"];
+const contentCollections = ["articles", "talks", "slides", "projects", "testimonials"];
 const runtimeReasonCodes = new Set(["publishing_review", "suspected_abuse", "account_recovery", "manual_owner_action"]);
 function requireOwner(auth) {
     const email = typeof auth?.token.email === "string" ? auth.token.email.toLowerCase() : "";
