@@ -1,4 +1,10 @@
 {
-  "name": "blog-site",
-  "compatibility_date": "2026-08-26"
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "labbys-blog",
+  "compatibility_date": "2026-08-26",
+  "assets": {
+    "directory": "./out",
+    "html_handling": "auto-trailing-slash",
+    "not_found_handling": "404-page"
+  }
 }

@@ -19,6 +19,14 @@ test("GitHub Pages build uses a repository base path", async () => {
   assert.match(config, /output: "export"/);
 });
 
+test("Cloudflare Workers publishes the Next.js static export", async () => {
+  const wrangler = JSON.parse((await read("wrangler.jsonc")).replace(/^\s*\/\/.*$/gm, ""));
+  assert.equal(wrangler.name, "labbys-blog");
+  assert.equal(wrangler.assets.directory, "./out");
+  assert.equal(wrangler.assets.html_handling, "auto-trailing-slash");
+  assert.equal(wrangler.assets.not_found_handling, "404-page");
+});
+
 test("Firebase rules default to deny and protect inquiries", async () => {
   const rules = await read("firestore.rules");
   assert.match(rules, /match \/inquiries\/\{id\}/);
