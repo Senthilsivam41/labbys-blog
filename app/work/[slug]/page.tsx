@@ -1,9 +1,57 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { PageShell } from "@/components/site-shell";
 import { getPublishedManifest } from "@/lib/content";
+import { diagramUrl, publishedWork, workBySlug } from "@/lib/portfolio";
+
 export const dynamicParams = false;
 export const dynamic = "force-static";
-export async function generateStaticParams() { const data = await getPublishedManifest(); const params = data.projects.map(({ slug }) => ({ slug })); return params.length ? params : [{ slug: "__placeholder__" }]; }
-export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> { const { slug } = await params; const data = await getPublishedManifest(); const item = data.projects.find((project) => project.slug === slug); return item ? { title: item.seoTitle ?? item.title, description: item.seoDescription ?? item.summary } : {}; }
-export default async function ProjectPage({ params }: { params: Promise<{ slug: string }> }) { const { slug } = await params; const data = await getPublishedManifest(); const item = data.projects.find((project) => project.slug === slug); if (!item) notFound(); return <PageShell site={data.site}><article className="case-study section-pad"><header><span className="eyebrow">{item.topic} · Selected work</span><h1>{item.title}</h1><p>{item.summary}</p></header><div className="case-grid"><section><span className="eyebrow">The challenge</span><h2>What needed to change</h2><p>{item.challenge}</p></section><section><span className="eyebrow">The approach</span><h2>How the work moved</h2><p>{item.approach}</p></section><section><span className="eyebrow">The outcome</span><h2>What became possible</h2><p>{item.outcomes}</p></section></div><div className="tag-row">{item.technologies.map((tag) => <span key={tag}>{tag}</span>)}</div>{item.projectUrl && <a className="button" href={item.projectUrl} target="_blank" rel="noreferrer">Visit project ↗</a>}</article></PageShell>; }
+
+export function generateStaticParams() {
+  const params = publishedWork().map(({ slug }) => ({ slug }));
+  return params.length ? params : [{ slug: "__placeholder__" }];
+}
+
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params;
+  const study = workBySlug(slug);
+  return study ? { title: study.title, description: study.summary } : {};
+}
+
+export default async function ProjectPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const data = await getPublishedManifest();
+  const study = workBySlug(slug);
+  if (!study) notFound();
+  const diagram = diagramUrl(study.diagram);
+  const published = new Set(publishedWork().map((item) => item.slug));
+  return (
+    <PageShell site={data.site}>
+      <article className="case-study section-pad">
+        <header>
+          <span className="eyebrow">Selected work</span>
+          <p><span className={`status ${study.status}`}>{study.status}</span></p>
+          <h1>{study.title}</h1>
+          <p>{study.summary}</p>
+        </header>
+        {diagram ? <img className="case-diagram" src={diagram} alt={`${study.title} architecture`} /> : null}
+        <div className="tag-row">{study.skills.map((skill) => <span key={skill}>{skill}</span>)}</div>
+        <div className="prose" dangerouslySetInnerHTML={{ __html: study.body }} />
+        {study.related && study.related.length > 0 ? (
+          <section>
+            <h2>Related</h2>
+            <ul>
+              {study.related.map((related) => (
+                <li key={related}>
+                  {published.has(related) ? <Link href={`/work/${related}/`}>{related}</Link> : <span>{related}</span>}
+                </li>
+              ))}
+            </ul>
+          </section>
+        ) : null}
+        {study.repo ? <a className="button" href={study.repo} target="_blank" rel="noreferrer">Visit repository ↗</a> : null}
+      </article>
+    </PageShell>
+  );
+}

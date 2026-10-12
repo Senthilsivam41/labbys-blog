@@ -40,6 +40,10 @@ yarn-error.log*
 next-env.d.ts
 /dist/
 /.wrangler/
+.content/
+.content.staging/
+.velite/
+public/content-assets/
 /outputs/
 /work/
 firebase-debug.log*

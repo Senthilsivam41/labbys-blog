@@ -138,6 +138,7 @@
 
   .article-page, .case-study { max-width:1080px; padding-bottom:8rem; padding-top:6rem; }
   .article-page header, .case-study header { border-bottom:1px solid var(--line); margin-bottom:4rem; padding-bottom:4rem; }
+  .case-diagram { height:auto; margin:0 auto 2rem; max-width:760px; }
   .article-page h1, .case-study h1 { font-size:clamp(3.5rem,7vw,7.5rem); margin:1rem 0 1.5rem; }
   .article-summary, .case-study header > p { color:var(--ink-soft); font-family:var(--serif); font-size:1.35rem; max-width:740px; }
   .article-byline { align-items:center; display:flex; margin-top:2rem; }
@@ -320,7 +321,8 @@
   .admin-table button { background:none; border:0; cursor:pointer; font-size:.75rem; font-weight:700; text-decoration:underline; }
   .admin-table button.danger { color:var(--rust); }
   .status { border:1px solid currentColor; color:#8a6b21; display:inline-block; font-size:.62rem; font-weight:750; letter-spacing:.07em; padding:.2rem .45rem; text-transform:uppercase; width:max-content; }
-  .status.published, .status.reviewed { color:#28704d; }
+  .status.published, .status.reviewed, .status.active, .status.shipped { color:#28704d; }
+  .status.parked, .status.idea, .status.prototype, .status.lab, .status.absorbed { color:var(--ink-soft); }
   .status.new { color:var(--blue); }
   .status.closed { color:var(--ink-soft); }
   .editor-toolbar { align-items:center; border-bottom:1px solid var(--line); display:flex; justify-content:space-between; margin-bottom:2rem; padding-bottom:1rem; }
