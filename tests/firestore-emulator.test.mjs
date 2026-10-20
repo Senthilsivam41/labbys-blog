@@ -16,8 +16,9 @@ async function createTestUser(label) {
       returnSecureToken: true,
     }),
   });
-  assert.equal(response.status, 200, await response.text());
-  return response.json();
+  const body = await response.text();
+  assert.equal(response.status, 200, body);
+  return JSON.parse(body);
 }
 
 function firestoreUrl(path = "userRuntime") {
