@@ -81,8 +81,8 @@ export default async function ImpactPage() {
             </section>
             <section className="verification-panel">
               <span className="eyebrow">Evidence to clear</span>
-              <h3>Before naming the client or result</h3>
-              <p><Verify>permission to name TotalEnergies and describe the engagement</Verify></p>
+              <h3>Before publishing scope or result</h3>
+              <p><Verify>approved description of the engagement, scope, and delivery outcome</Verify></p>
               <p><Verify>exact role, ownership, and lifecycle phases</Verify></p>
               <p><Verify>approved Azure services, topology, scope, and scale</Verify></p>
               <p><Verify>measurable delivery, reliability, cost, or operational outcome</Verify></p>
@@ -92,7 +92,7 @@ export default async function ImpactPage() {
 
         <section className="impact-story impact-story-dark section-pad" aria-labelledby="payments-heading">
           <header className="story-intro">
-            <div><span className="story-number">02</span><span className="eyebrow">Digital payments · Large commerce platform</span></div>
+            <div><span className="story-number">02</span><span className="eyebrow">Digital payments · Large Ecommerce Giant in India</span></div>
             <div>
               <h2 id="payments-heading">UPI integration shaped as both a system and a delivery program.</h2>
               <p>
@@ -124,7 +124,7 @@ export default async function ImpactPage() {
             <section className="verification-panel">
               <span className="eyebrow">Evidence to clear</span>
               <h3>Before publishing scale or impact</h3>
-              <p><Verify>permission to name Flipkart Pay and the gateway partners</Verify></p>
+              <p><Verify>approved description of the Large Ecommerce Giant in India engagement and its gateway integrations</Verify></p>
               <p><Verify>12-person team and Hyderabad/Bangalore delivery footprint</Verify></p>
               <p><Verify>six-month baseline and three-month delivery outcome</Verify></p>
               <p><Verify>implementation evidence for VPA, idempotency, failover, and reconciliation choices</Verify></p>
