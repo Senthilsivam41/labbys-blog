@@ -92,7 +92,7 @@ test("blocked owners are guarded by a no-index review route", async () => {
     read("app/under-review/page.tsx"),
     read("components/admin-dashboard.tsx"),
   ]);
-  assert.match(guard, /collection\("userRuntime"\)\.doc\(user\.uid\)/);
+  assert.match(guard, /doc\(services\.db, "userRuntime", user\.uid\)/);
   assert.match(guard, /window\.location\.replace/);
   assert.match(guard, /state === "unavailable"/);
   assert.match(page, /index: false/);

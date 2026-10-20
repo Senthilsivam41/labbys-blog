@@ -50,6 +50,6 @@ Chosen option: **Cloudflare Workers static assets**, because the live site is al
 | `.github/workflows/deploy-cloudflare.yml` | Keep. Triggers: `repository_dispatch` `content-updated`, push to `main`, `workflow_dispatch`. |
 | `.github/workflows/validate.yml` | Keep. Runs on every push and pull request. |
 | `.github/workflows/deploy-firebase.yml` | Keep for now. It deploys Functions, Firestore, and Storage only, and only on `workflow_dispatch`. Do not use it for the public HTML. |
-| `.github/workflows/deploy-render.yml` | Retire later. It is not the live path. Not deleted in this decision. |
-| `.hostinger/site.json` | Retire later. Hostinger remains DNS, not the static host. Not deleted in this decision. |
+| `.github/workflows/deploy-render.yml` | Removed. Cloudflare is the host. |
+| `.hostinger/site.json` | Removed. Hostinger remains DNS, not the static host. |
 | `firebase.json` | Keep for Auth, Firestore, Functions, and emulators. |

@@ -48,3 +48,4 @@ public/content-assets/
 /work/
 firebase-debug.log*
 .firebase/
+functions/lib/

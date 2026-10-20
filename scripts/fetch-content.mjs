@@ -3,7 +3,6 @@ import { execFile } from "node:child_process";
 import { access, cp, mkdir, readdir, readFile, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { promisify } from "node:util";
-import { downloadTemplate } from "giget";
 
 const exec = promisify(execFile);
 
@@ -62,17 +61,6 @@ async function remoteSha(repo, ref, token) {
   return typeof body.sha === "string" ? body.sha : ref;
 }
 
-async function downloadWithGiget(repo, ref, token, dest) {
-  await rm(dest, { recursive: true, force: true });
-  await downloadTemplate(`github:${repo}#${ref}`, {
-    dir: dest,
-    force: true,
-    forceClean: true,
-    auth: token || undefined,
-  });
-  return findContentRoot(dest);
-}
-
 async function downloadTarball(repo, ref, token, dest) {
   await rm(dest, { recursive: true, force: true });
   await mkdir(dest, { recursive: true });
@@ -117,12 +105,7 @@ export async function fetchContent(options = {}) {
     }
     sha = await localSha(local);
   } else {
-    try {
-      source = await downloadWithGiget(repo, ref, token, staging);
-    } catch (error) {
-      console.warn(`giget download failed (${error instanceof Error ? error.message : error}). Trying the GitHub tarball.`);
-      source = await downloadTarball(repo, ref, token, staging);
-    }
+    source = await downloadTarball(repo, ref, token, staging);
     sha = await remoteSha(repo, ref, token);
   }
 
