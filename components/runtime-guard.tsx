@@ -1,8 +1,10 @@
 "use client";
 
 import { useEffect, useState, type ReactNode } from "react";
+import { doc, onSnapshot } from "firebase/firestore";
+import type { User } from "firebase/auth";
 import { basePath } from "@/lib/paths";
-import type { CompatUser, FirebaseServices } from "@/lib/firebase";
+import type { FirebaseServices } from "@/lib/firebase";
 
 type GuardState = "checking" | "allowed" | "unavailable";
 
@@ -22,15 +24,16 @@ export function RuntimeGuard({
   children,
 }: {
   services: FirebaseServices;
-  user: CompatUser;
+  user: User;
   children: ReactNode;
 }) {
   const [state, setState] = useState<GuardState>("checking");
 
   useEffect(() => {
     setState("checking");
-    const runtimeRef = services.db.collection("userRuntime").doc(user.uid);
-    return runtimeRef.onSnapshot(
+    const runtimeRef = doc(services.db, "userRuntime", user.uid);
+    return onSnapshot(
+      runtimeRef,
       (snapshot) => {
         if (activeBlock(snapshot.data())) {
           window.location.replace(`${basePath}/under-review/`);

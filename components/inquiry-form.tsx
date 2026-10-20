@@ -1,6 +1,7 @@
 "use client";
 
 import { FormEvent, useState } from "react";
+import { httpsCallable } from "firebase/functions";
 import { firebaseServices } from "@/lib/firebase";
 
 export function InquiryForm() {
@@ -15,7 +16,7 @@ export function InquiryForm() {
     const services = await firebaseServices();
     if (!services) { setError("The inquiry service is not configured yet. Please try again after launch."); setState("error"); return; }
     try {
-      await services.functions.httpsCallable("submitInquiry")({ name: values.name, email: values.email, message: values.message });
+      await httpsCallable(services.functions, "submitInquiry")({ name: values.name, email: values.email, message: values.message });
       form.reset(); setState("sent");
     } catch {
       setError("Your inquiry could not be sent. Please wait a moment and try again."); setState("error");

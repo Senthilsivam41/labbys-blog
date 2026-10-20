@@ -47,6 +47,12 @@ export interface Project extends BaseContent {
   projectUrl?: string;
 }
 
+export interface Testimonial extends BaseContent {
+  kind: "testimonial";
+  role?: string;
+  organization?: string;
+}
+
 export interface AdvisoryService {
   id: string;
   title: string;
@@ -72,6 +78,7 @@ export interface PublishedManifest {
   talks: Talk[];
   slides: Slide[];
   projects: Project[];
+  testimonials: Testimonial[];
   generatedAt?: string;
 }
 

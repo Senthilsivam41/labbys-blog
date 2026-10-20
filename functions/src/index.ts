@@ -14,7 +14,7 @@ const inquirySalt = defineSecret("INQUIRY_HASH_SALT");
 const adminEmail = defineString("ADMIN_EMAIL");
 const githubOwner = defineString("GITHUB_OWNER");
 const githubRepo = defineString("GITHUB_REPO", { default: "blog-site" });
-const contentCollections = ["articles", "talks", "slides", "projects"] as const;
+const contentCollections = ["articles", "talks", "slides", "projects", "testimonials"] as const;
 const runtimeReasonCodes = new Set(["publishing_review", "suspected_abuse", "account_recovery", "manual_owner_action"]);
 
 function requireOwner(auth: { token: Record<string, unknown> } | undefined) {
