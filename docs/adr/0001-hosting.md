@@ -28,13 +28,12 @@ Chosen option: **Cloudflare Workers static assets**, because the live site is al
 
 **DNS.** Hostinger keeps the `labbys-aoai.in` zone. `portfolio.labbys-aoai.in` is the canonical portfolio host and points at Cloudflare. `tech-blog.labbys-aoai.in` is not a second copy of this build; writing stays on the existing articles route until a host split is explicit.
 
-**Content source: external repo `portfolio-content` fetched at build (option a+d).** `scripts/fetch-content.mjs` downloads `Senthilsivam41/portfolio-content` at `CONTENT_REF` (the dispatch sha, or `main`) into gitignored `.content/`. Velite then builds typed collections from that directory. Drafts are omitted. Firestore remains the source for talks, slides, and inquiries. Local builds pass `--local` or use the sibling checkout at `../portfolio-content`.
+**Content source: `Senthilsivam41/second-brain-store`, folder `Second Brain/wiki/workstreams`.** `scripts/fetch-content.mjs` reads that wiki. A note is published only when its frontmatter has `publish: true` and the public case-study fields. Cloudflare's build settings stay as they are. A private vault without `CONTENT_TOKEN` publishes no vault notes instead of looking for a `portfolio-content` repository. Firestore remains the source for talks, slides, and inquiries. Local builds use `../Knowledge-Store/Second Brain` when that checkout is present.
 
 ### Consequences
 
-- A content merge to `portfolio-content` `main` dispatches `content-updated` and this repo rebuilds. The site repo does not commit the markdown.
-- A failed fetch fails the build and leaves the previous Cloudflare deployment in place.
-- `CONTENT_TOKEN` is required only if `portfolio-content` is private. `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` deploy the `out/` directory.
+- A content merge to `second-brain-store` `main` can dispatch `content-updated` and this repo rebuilds. The site repo does not commit the vault.
+- `CONTENT_TOKEN` is required for the private vault. Without it, the build continues and publishes no vault notes. `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` deploy the `out/` directory.
 
 ## Confirmation
 
